@@ -217,7 +217,10 @@ if (kamu.menerima) {
   end.innerText=`Aku bangga bisa memilihmu, ${name}.`;
   card.appendChild(end);
 
-  sendToWhatsApp(`Dia memilih MENERIMA ❤️\nNama: ${name}`);
+  sendToTelegram(
+  `❤️ *STATUS: MENERIMA*\nNama: ${name}\nTanggal: ${new Date().toLocaleString("id-ID")}`
+);
+
 
 }
 
@@ -238,10 +241,15 @@ Terima kasih sudah membaca sampai akhir.”`,23,true);
 
   card.style.background="rgba(0,0,0,0.45)";
   card.style.backdropFilter="blur(14px)";
-  sendToWhatsApp(`Dia memilih MENOLAK 💔\nNama: ${name}`);
+  
 
 
   for(let i=0;i<35;i++){ spawnErr(); await wait(60); }
+
+  sendToTelegram(
+  `💔 *STATUS: MENOLAK*\nNama: ${name}\nTanggal: ${new Date().toLocaleString("id-ID")}`
+);
+
 }
 
 /* helpers */
@@ -288,13 +296,22 @@ function spawnErr(){
   setTimeout(()=>e.remove(),4800);
 }
 
-// nomor WhatsApp kamu
-const wa = "6281216818365";
+// === TELEGRAM NOTIFICATION ===
+const botToken = "8596167070:AAE7dmjSN26AL58q183fT2t5Qxqpj_xfSyI";
+const chatId = "5749468542";
 
-function sendToWhatsApp(message) {
-  const url = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
+function sendToTelegram(message) {
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: message,
+      parse_mode: "HTML"
+    })
+  });
 }
+
 
 </script>
 </body>
