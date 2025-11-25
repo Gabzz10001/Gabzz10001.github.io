@@ -98,7 +98,6 @@
     100%{transform:translateY(110vh);opacity:0}
   }
 
-  /* modal confirm */
   .modal-bg{
     position:fixed;inset:0;background:rgba(0,0,0,0.45);
     backdrop-filter:blur(7px);
@@ -217,6 +216,9 @@ if (kamu.menerima) {
   end.style.fontWeight="600";
   end.innerText=`Aku bangga bisa memilihmu, ${name}.`;
   card.appendChild(end);
+
+  sendToWhatsApp(`Dia memilih MENERIMA ❤️\nNama: ${name}`);
+
 }
 
 /* decline */
@@ -236,6 +238,8 @@ Terima kasih sudah membaca sampai akhir.”`,23,true);
 
   card.style.background="rgba(0,0,0,0.45)";
   card.style.backdropFilter="blur(14px)";
+  sendToWhatsApp(`Dia memilih MENOLAK 💔\nNama: ${name}`);
+
 
   for(let i=0;i<35;i++){ spawnErr(); await wait(60); }
 }
@@ -283,6 +287,15 @@ function spawnErr(){
   document.body.appendChild(e);
   setTimeout(()=>e.remove(),4800);
 }
+
+// nomor WhatsApp kamu
+const wa = "6281216818365";
+
+function sendToWhatsApp(message) {
+  const url = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+}
+
 </script>
 </body>
 </html>
