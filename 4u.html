@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Untuk Kamu — Halaman Khusus</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg1:#0e0a14;
+    --bg2:#181222;
+    --accent:#ff7eb6;
+    --soft:rgba(255,255,255,0.04);
+    --muted:rgba(255,255,255,0.25);
+  }
+  *{box-sizing:border-box;font-family:'Poppins',sans-serif}
+  html,body{height:100%;margin:0;background:radial-gradient(circle at 15% 10%, #191327, var(--bg2) 40%, var(--bg1) 90%);overflow:hidden;color:#fff}
+
+  /* ambient particles */
+  .particle{
+    position:fixed;
+    width:6px;height:6px;border-radius:50%;
+    background:linear-gradient(180deg,#ffd6f4,#ffc3ec);
+    opacity:.9;filter:blur(1px);
+    animation:float 9s linear infinite;
+  }
+  @keyframes float{
+    0%{transform:translateY(0px) translateX(0px)}
+    50%{transform:translateY(-28px) translateX(12px)}
+    100%{transform:translateY(0px) translateX(0px)}
+  }
+
+  /* center card */
+  .wrap{position:relative;z-index:10;min-width:300px;max-width:520px;width:92%;margin:auto;height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+  .card{
+    width:100%;background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+    border-radius:22px;padding:36px;border:1px solid rgba(255,255,255,0.06);
+    box-shadow:0 15px 50px rgba(0,0,0,0.7);backdrop-filter:blur(12px);
+    transform:translateY(6px) scale(.97);opacity:0;transition:.9s cubic-bezier(.2,.9,.2,1);
+  }
+  .card.show{opacity:1;transform:translateY(0) scale(1)}
+
+  .intro{color:var(--muted);font-weight:300;font-size:15px;margin-bottom:8px;text-align:center}
+  h1{font-weight:600;font-size:22px;margin:6px 0 18px;text-align:center;letter-spacing:.4px}
+  .buttons{display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  button{padding:13px 28px;border-radius:999px;border:none;cursor:pointer;font-weight:600;font-size:15px;transition:transform .18s ease}
+  button:active{transform:scale(.96)}
+  .btn-yes{background:linear-gradient(90deg,#69ffd9,#ff9adb);color:#071012}
+  .btn-no{background:#27212b;color:#fff;border:1px solid rgba(255,255,255,0.05)}
+
+  /* heartbeat */
+  .heartbeat{
+    width:18px;height:18px;border-radius:50%;
+    background:linear-gradient(180deg,#ffa9d9,#ff76c7);
+    box-shadow:0 0 18px rgba(255,130,180,0.3);
+    animation:beat 1.2s ease-in-out infinite;display:inline-block;margin-right:8px
+  }
+  @keyframes beat{0%{transform:scale(.9)}30%{transform:scale(1.15)}60%{transform:scale(.96)}100%{transform:scale(1)}}
+
+  #output{margin-top:14px;font-size:15px;white-space:pre-wrap;line-height:1.6}
+
+  /* flower petals */
+  /* glowing petals */
+.petal{
+  position:fixed;
+  top:-10vh;
+  pointer-events:none;
+  animation:fall linear forwards;
+  filter:drop-shadow(0 0 10px rgba(255,170,210,0.85));
+  opacity:0.95;
+}
+
+@keyframes fall {
+  0%{
+    transform:translateY(-12vh) rotate(0deg) scale(.9);
+    opacity:1;
+  }
+  60%{
+    transform:translateY(60vh) rotate(140deg) scale(1.15);
+    opacity:.92;
+  }
+  100%{
+    transform:translateY(110vh) rotate(260deg) scale(.92);
+    opacity:0;
+  }
+}
+
+
+  /* error rain */
+  .errorRain{
+    position:fixed;color:#ff6b6b;font-family:ui-monospace;
+    animation:drop linear forwards;
+  }
+  @keyframes drop{
+    0%{transform:translateY(-8vh);opacity:1}
+    100%{transform:translateY(110vh);opacity:0}
+  }
+
+  /* modal confirm */
+  .modal-bg{
+    position:fixed;inset:0;background:rgba(0,0,0,0.45);
+    backdrop-filter:blur(7px);
+    display:flex;align-items:center;justify-content:center;
+    z-index:60;opacity:0;pointer-events:none;transition:.3s;
+  }
+  .modal-bg.show{opacity:1;pointer-events:auto}
+  .modal-box{
+    background:#1b1325;padding:26px 28px;border-radius:18px;max-width:320px;width:88%;
+    text-align:center;box-shadow:0 8px 35px rgba(0,0,0,.6);
+  }
+  .modal-btns{display:flex;gap:10px;justify-content:center;margin-top:18px}
+  .modal-btns button{padding:10px 20px;border-radius:10px;border:none;font-weight:600;font-size:14px;cursor:pointer}
+  .yes-confirm{background:#ff7eb6;color:#fff}
+  .no-cancel{background:#302636;color:#fff}
+</style>
+</head>
+<body>
+
+<div id="ambient"></div>
+
+<div class="wrap">
+  <div class="card" id="card">
+    <div id="preIntro" style="text-align:center;margin-bottom:6px;opacity:0">
+      <span class="heartbeat"></span> <span id="preText" style="color:var(--muted)">memuat momen spesial...</span>
+    </div>
+
+    <div id="mainContent" style="display:none">
+      <div class="intro">Ke halaman ini hanya untuk seseorang yang spesial</div>
+      <h1 id="title">—</h1>
+      <div style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:10px">Aku sudah siapkan sesuatu yang dibuat khusus untukmu.</div>
+      <div class="buttons">
+        <button class="btn-yes" id="yesBtn">Iya, aku mau</button>
+        <button class="btn-no" id="noBtn">Maaf, belum bisa</button>
+      </div>
+      <div id="output"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Confirm -->
+<div class="modal-bg" id="confirmModal">
+  <div class="modal-box">
+    <h3>Yakin nolak nih?</h3>
+    <p style="font-size:14px;color:var(--muted)">Aku cuma nanya sekali doang lho…</p>
+    <div class="modal-btns">
+      <button class="yes-confirm" id="confirmYes">Yakin</button>
+      <button class="no-cancel" id="confirmNo">Balik aja</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const name = params.get("name") || params.get("nama") || "kamu";
+const card = document.getElementById("card");
+const mainContent = document.getElementById("mainContent");
+const modal = document.getElementById("confirmModal");
+let chosen=false;
+
+/* intro */
+card.classList.add("show");
+setTimeout(()=>{
+  document.getElementById("preIntro").style.opacity=1;
+  type(preText,"memuat memori...",28,true)
+  .then(()=>wait(450))
+  .then(()=>type(preText,`Selamat datang, ${name}.`,34,true))
+  .then(()=>wait(600))
+  .then(()=>{
+    preIntro.style.opacity=0;
+    mainContent.style.display="block";
+    document.getElementById("title").innerText=`Bolehkah aku jadi orang yang kamu pilih untuk menemani hari-harimu, ${name}?`;
+  });
+},600);
+
+/* animated background */
+(function(){
+  for(let i=0;i<25;i++){
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"vw";
+    p.style.top=Math.random()*100+"vh";
+    p.style.animationDuration=(7+Math.random()*6)+"s";
+    document.body.appendChild(p);
+  }
+})();
+
+/* button logic */
+yesBtn.onclick = handleAccept;
+noBtn.onclick = ()=> !chosen && modal.classList.add("show");
+confirmNo.onclick = ()=> modal.classList.remove("show");
+confirmYes.onclick = handleDecline;
+
+/* accept */
+async function handleAccept(){
+  if(chosen) return; chosen=true;
+  mainContent.style.display="none";
+  card.innerHTML=`<div id="output"></div>`;
+  const out=document.getElementById("output");
+  const date=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
+  await type(out,
+`// STATUS: ♥️ Relationship Accepted on ${date}
+
+if (kamu.menerima) {
+
+    print("Terima kasih sudah milih aku di antara sejuta kemungkinan.");
+    print("Mulai sekarang, aku mau compile masa depan kita pelan-pelan.");
+
+}`,20,true);
+
+  for(let i=0;i<60;i++){ spawnPetal(); await wait(65); }
+
+  const end=document.createElement("div");
+  end.style.marginTop="18px";
+  end.style.textAlign="center";
+  end.style.fontWeight="600";
+  end.innerText=`Aku bangga bisa memilihmu, ${name}.`;
+  card.appendChild(end);
+}
+
+/* decline */
+async function handleDecline(){
+  modal.classList.remove("show");
+  if(chosen) return; chosen=true;
+  mainContent.style.display="none";
+  card.innerHTML=`<div id="output"></div>`;
+  const out=document.getElementById("output");
+  await type(out,
+`Error: RelationshipNotAcceptedException
+
+“Tapi nggak apa-apa.
+Ini cuma hasil dari satu kondisi, bukan akhir dari program.
+Aku tetap sayang sama prosesnya.
+Terima kasih sudah membaca sampai akhir.”`,23,true);
+
+  card.style.background="rgba(0,0,0,0.45)";
+  card.style.backdropFilter="blur(14px)";
+
+  for(let i=0;i<35;i++){ spawnErr(); await wait(60); }
+}
+
+/* helpers */
+function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function type(el,text,s,reset){
+  return new Promise(res=>{
+    if(reset) el.innerText="";
+    let i=0;
+    const t=setInterval(()=>{
+      el.innerText=text.slice(0,++i);
+      if(i>=text.length){clearInterval(t);res();}
+    },s);
+  });
+}
+
+function spawnPetal(){
+  const flowers = ["🌸","💮","🌺","🌷","🌹","🪷"];
+  const f = document.createElement("div");
+  f.className = "petal";
+  f.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+
+  // posisi mulai dari atas
+  f.style.left = Math.random() * 100 + "vw";
+  f.style.fontSize = (20 + Math.random() * 28) + "px";
+
+  // durasi jatuh (lebih slow dan natural)
+  f.style.animationDuration = (4.5 + Math.random() * 5) + "s";
+
+  // sedikit delay acak biar lebih realistis
+  f.style.animationDelay = (Math.random() * 1.5) + "s";
+
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 9000);
+}
+
+function spawnErr(){
+  const e=document.createElement("div");
+  e.className="errorRain";
+  e.innerText="ERROR";
+  e.style.left=Math.random()*100+"vw";
+  e.style.fontSize=(11+Math.random()*14)+"px";
+  e.style.animationDuration=(2.3+Math.random()*2.5)+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),4800);
+}
+</script>
+</body>
+</html>
