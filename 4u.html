@@ -8,6 +8,104 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
+/* 🌙 Bulan aestetik */
+#moon {
+  position: fixed;
+  top: 7vh;
+  right: 9vw;
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff7e9, #ffeabf 60%, #e5cf9d 100%);
+  box-shadow: 0 0 35px rgba(255, 227, 170, 0.6);
+  z-index: 1;
+  animation: moonGlow 6s ease-in-out infinite;
+}
+
+@keyframes moonGlow {
+  0%   { filter: brightness(1); }
+  50%  { filter: brightness(1.35); }
+  100% { filter: brightness(1); }
+}
+
+/* ☁️ Awan */
+.cloud {
+  position: fixed;
+  top: 18vh;
+  width: 200px;
+  height: 65px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 100px;
+  box-shadow:
+    60px 10px 60px rgba(255,255,255,0.12),
+    -40px 15px 50px rgba(255,255,255,0.12);
+  filter: blur(0.4px);
+  animation: cloudMove linear infinite;
+  z-index: 1;
+}
+
+@keyframes cloudMove {
+  0%   { transform: translateX(-30vw); opacity: .55; }
+  50%  { opacity: .75; }
+  100% { transform: translateX(130vw); opacity: .55; }
+}
+
+
+
+
+/* rumput bergoyang aesthetic */
+#grassField {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 110px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.grass {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 55px;
+  background: linear-gradient(to top, #2dff87, #caffd6);
+  border-radius: 3px;
+  transform-origin: bottom center;
+  animation: sway 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(100,255,140,0.45));
+}
+
+@keyframes sway {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+
+
+  .firefly {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe8a7, #ffce3a);
+  box-shadow: 0 0 10px 4px rgba(255, 230, 120, 0.8);
+  animation: moveFirefly 8s infinite ease-in-out;
+  opacity: 0.9;
+}
+
+@keyframes moveFirefly {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(30px, -20px); }
+  50% { transform: translate(-10px, 20px); }
+  75% { transform: translate(20px, 30px); }
+  100% { transform: translate(0, 0); }
+}
+
   :root{
     --bg1:#0e0a14;
     --bg2:#181222;
@@ -115,9 +213,15 @@
   .no-cancel{background:#302636;color:#fff}
 </style>
 </head>
+
+ <div id="grassField"></div>
+
 <body>
 
 <div id="ambient"></div>
+<div id="moon"></div>
+<div id="clouds"></div>
+
 
 <div class="wrap">
   <div class="card" id="card">
@@ -126,9 +230,9 @@
     </div>
 
     <div id="mainContent" style="display:none">
-      <div class="intro">Ke halaman ini hanya untuk seseorang yang spesial</div>
+      <div class="intro">halaman ini hanya untuk seseorang yang spesial</div>
       <h1 id="title">—</h1>
-      <div style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:10px">Aku sudah siapkan sesuatu yang dibuat khusus untukmu.</div>
+      <div style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:10px">Keputusan terletak padamu jadi pikirkan baik-baik</div>
       <div class="buttons">
         <button class="btn-yes" id="yesBtn">Iya, aku mau</button>
         <button class="btn-no" id="noBtn">Maaf, belum bisa</button>
@@ -152,7 +256,7 @@
 
 <script>
 const params = new URLSearchParams(location.search);
-const name = params.get("name") || params.get("nama") || "kamu";
+const name = params.get("name") || params.get("nama") || "Dina";
 const card = document.getElementById("card");
 const mainContent = document.getElementById("mainContent");
 const modal = document.getElementById("confirmModal");
@@ -169,7 +273,7 @@ setTimeout(()=>{
   .then(()=>{
     preIntro.style.opacity=0;
     mainContent.style.display="block";
-    document.getElementById("title").innerText=`Bolehkah aku jadi orang yang kamu pilih untuk menemani hari-harimu, ${name}?`;
+    document.getElementById("title").innerText=`Mau jalani pake status kah, ${name}?`;
   });
 },600);
 
@@ -311,6 +415,51 @@ function sendToTelegram(message) {
     })
   });
 }
+// 🔥 kunang-kunang ambient background
+(function createFireflies(){
+  const count = 25; // jumlah kunang-kunang
+  for (let i = 0; i < count; i++) {
+    const f = document.createElement("div");
+    f.className = "firefly";
+    f.style.left = Math.random() * 100 + "vw";
+    f.style.top = Math.random() * 100 + "vh";
+    f.style.animationDuration = (6 + Math.random() * 6) + "s";
+    f.style.animationDelay = (Math.random() * 4) + "s";
+    document.body.appendChild(f);
+  }
+})();
+
+// 🎋 spawn rumput bergoyang
+(function makeGrass(){
+  const field = document.getElementById("grassField");
+  const total = 65; // jumlah rumput
+  for (let i = 0; i < total; i++) {
+    const g = document.createElement("div");
+    g.className = "grass";
+    g.style.left = (i * (100 / total)) + "vw";
+    g.style.animationDelay = (Math.random() * 3) + "s";
+    g.style.height = (40 + Math.random() * 35) + "px"; // panjang acak
+    g.style.width = (3 + Math.random() * 3) + "px";    // ketebalan acak
+    field.appendChild(g);
+  }
+})();
+
+// ☁️ spawn awan
+(function spawnClouds(){
+  const area = document.getElementById("clouds");
+  const total = 5; // jumlah awan
+  for (let i = 0; i < total; i++){
+    const c = document.createElement("div");
+    c.className = "cloud";
+    c.style.top = (10 + Math.random() * 22) + "vh";
+    c.style.animationDuration = (35 + Math.random() * 30) + "s";
+    c.style.animationDelay = (Math.random() * 15) + "s";
+    c.style.transform = "scale(" + (0.8 + Math.random() * 0.7) + ")";
+    area.appendChild(c);
+  }
+})();
+
+
 
 
 </script>
